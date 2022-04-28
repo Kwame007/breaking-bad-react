@@ -1,12 +1,14 @@
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
+import { CharacterContext } from "../context/CharacterContextProvider";
 import classes from "./CharacterInput.module.css";
 
-const CharacterInput = ({ onChange, className }) => {
+const CharacterInput = ({ className }) => {
+  const { getCharacter } = useContext(CharacterContext);
   const inputRef = useRef();
 
-  const handleQUeryChange = () => {
+  const handleQueryChange = () => {
     // pass query value to parent componet
-    onChange(inputRef.current.value);
+    getCharacter(inputRef.current.value);
   };
 
   // const handleSubmit = (event) => {
@@ -20,7 +22,7 @@ const CharacterInput = ({ onChange, className }) => {
         <input
           type="text"
           className={`${className} ${classes.search}`}
-          onChange={handleQUeryChange}
+          onChange={handleQueryChange}
           ref={inputRef}
           autoFocus
         />
