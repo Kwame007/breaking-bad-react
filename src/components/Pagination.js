@@ -9,7 +9,7 @@ const Pagination = (props) => {
   const [paginateData, setPaginatedData] = useState(null);
   const [pages, setPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-
+ 
   useEffect(() => {
     // check if data is valid
     if (data) {
