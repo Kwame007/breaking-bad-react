@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useReducer } from "react";
 import Button from "./Button";
 import classes from "./Pagination.module.css";
 import Character from "./Character";
@@ -9,6 +9,9 @@ const Pagination = (props) => {
   const [paginateData, setPaginatedData] = useState(null);
   const [pages, setPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+
+  // manage states with useReducer
+  const [state, dispatch] = useReducer(() => {}, { data: "" });
 
   useEffect(() => {
     // check if data is valid
