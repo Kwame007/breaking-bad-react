@@ -32,12 +32,24 @@ const pagesReducer = (state, action) => {
   }
 };
 
+//curentPageReducer reducer function
+const currentPageReducer = (state, action) => {
+  switch (action.type) {
+    case "NEXT":
+      return { currentPage: state.currentPage + 1 };
+
+    case "PREV":
+      return { currentPage: action.currentPage };
+
+    default:
+      return {
+        pages: 1,
+      };
+  }
+};
+
 const Pagination = (props) => {
   const { data, isLoading, error } = useContext(CharacterContext);
-
-  // const [paginateData, setPaginatedData] = useState(null);
-  // const [pages, setPages] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
 
   // manage paginateData states with useReducer
   const [state, dispatch] = useReducer(paginateDataReducer, {
@@ -49,13 +61,20 @@ const Pagination = (props) => {
     pages: null,
   });
 
+  // manage current page state with useReducer
+  const [currentPageState, currentPageDispatch] = useReducer(
+    currentPageReducer,
+    {
+      currentPage: 1,
+    }
+  );
+
   // check for specific data change
   const { value: pagesValue } = PagesState;
 
   useEffect(() => {
     // check if data is valid
     if (data) {
-      // setPages(Math.round(data.length / props.dataLimit));
       pagesDispatch({
         type: "SET_PAGES",
         value: Math.round(data.length / props.dataLimit),
@@ -67,29 +86,37 @@ const Pagination = (props) => {
       });
 
       // get start and end index from original characters array {data}
-      const startIndex = currentPage * props.dataLimit - props.dataLimit;
-      const endIndex = currentPage + props.dataLimit - 1;
+      const startIndex =
+        currentPageState.currentPage * props.dataLimit - props.dataLimit;
+
+      const endIndex = startIndex + props.dataLimit;
 
       // update {pagenatedData} with sliced array {which will contain the paginated array to be renderd}
-      // setPaginatedData((prevData) => prevData.slice(startIndex, endIndex));
       dispatch({
         type: "SET_NEW_DATA",
         paginateData: data.slice(startIndex, endIndex),
       });
     }
-  }, [pagesValue, data, props.dataLimit, currentPage]);
+  }, [pagesValue, data, props.dataLimit, currentPageState.currentPage]);
 
   // error message
   const errMessage = <h3 className={`container center`}>No character found</h3>;
+  console.log(currentPageState);
 
   //get next page function
   const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+    currentPageDispatch({
+      type: "NEXT",
+      currentPage: currentPageState.currentPage,
+    });
   };
 
   // get previous page function
   const handlePrevPage = () => {
-    setCurrentPage((prevPage) => prevPage - 1);
+    currentPageDispatch({
+      type: "PREV",
+      currentPage: currentPageState.currentPage - 1,
+    });
   };
   return (
     <>
