@@ -4,9 +4,9 @@ import classes from "./Pagination.module.css";
 import Character from "./Character";
 import { CharacterContext } from "../context/CharacterContextProvider";
 
-// reducer function
+//paginateDataReducer reducer function
 const paginateDataReducer = (state, action) => {
-  console.log(state);
+  // console.log(state);
   switch (action.type) {
     case "DATA_CHANGE":
       return { paginateData: action.paginateData };
@@ -18,23 +18,48 @@ const paginateDataReducer = (state, action) => {
       };
   }
 };
+//paginateDataReducer reducer function
+const pagesReducer = (state, action) => {
+  console.log(state);
+  switch (action.type) {
+    case "SET_PAGES":
+      return { pages: action.value };
+
+    default:
+      return {
+        pages: 1,
+      };
+  }
+};
 
 const Pagination = (props) => {
   const { data, isLoading, error } = useContext(CharacterContext);
 
   // const [paginateData, setPaginatedData] = useState(null);
-  const [pages, setPages] = useState(null);
+  // const [pages, setPages] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // manage states with useReducer
+  // manage paginateData states with useReducer
   const [state, dispatch] = useReducer(paginateDataReducer, {
     paginateData: null,
   });
 
+  // manage pages states with useReducer
+  const [PagesState, pagesDispatch] = useReducer(pagesReducer, {
+    pages: null,
+  });
+
+  // check for specific data change
+  const { value: pagesValue } = PagesState;
+
   useEffect(() => {
     // check if data is valid
     if (data) {
-      setPages(Math.round(data.length / props.dataLimit));
+      // setPages(Math.round(data.length / props.dataLimit));
+      pagesDispatch({
+        type: "SET_PAGES",
+        value: Math.round(data.length / props.dataLimit),
+      });
       // setPaginatedData(data);
       dispatch({
         type: "DATA_CHANGE",
@@ -51,10 +76,8 @@ const Pagination = (props) => {
         type: "SET_NEW_DATA",
         paginateData: data.slice(startIndex, endIndex),
       });
-
-      // console.log(data.slice(startIndex, endIndex));
     }
-  }, [pages, data, props.dataLimit, currentPage]);
+  }, [pagesValue, data, props.dataLimit, currentPage]);
 
   // error message
   const errMessage = <h3 className={`container center`}>No character found</h3>;
