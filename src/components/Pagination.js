@@ -6,7 +6,6 @@ import { CharacterContext } from "../context/CharacterContextProvider";
 
 //paginateDataReducer reducer function
 const paginateDataReducer = (state, action) => {
-  // console.log(state);
   switch (action.type) {
     case "DATA_CHANGE":
       return { paginateData: action.paginateData };
@@ -20,7 +19,6 @@ const paginateDataReducer = (state, action) => {
 };
 //paginateDataReducer reducer function
 const pagesReducer = (state, action) => {
-  console.log(state);
   switch (action.type) {
     case "SET_PAGES":
       return { pages: action.value };
@@ -79,6 +77,7 @@ const Pagination = (props) => {
         type: "SET_PAGES",
         value: Math.round(data.length / props.dataLimit),
       });
+
       // setPaginatedData(data);
       dispatch({
         type: "DATA_CHANGE",
@@ -101,7 +100,6 @@ const Pagination = (props) => {
 
   // error message
   const errMessage = <h3 className={`container center`}>No character found</h3>;
-  console.log(currentPageState);
 
   //get next page function
   const handleNextPage = () => {
