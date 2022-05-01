@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useReducer } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import Button from "./Button";
 import classes from "./Pagination.module.css";
 import Character from "./Character";
@@ -47,13 +47,6 @@ const currentPageReducer = (state, action) => {
 };
 
 const Pagination = (props) => {
-<<<<<<< HEAD
-  const { data, isLoading, error, pageLimit } = useContext(CharacterContext);
-  const [paginateData, setPaginatedData] = useState(null);
-  const [pages, setPages] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
- 
-=======
   const { data, isLoading, error } = useContext(CharacterContext);
 
   // manage paginateData states with useReducer
@@ -77,7 +70,6 @@ const Pagination = (props) => {
   // check for specific data change
   const { value: pagesValue } = PagesState;
 
->>>>>>> reducerState
   useEffect(() => {
     // check if data is valid
     if (data) {
